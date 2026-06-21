@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Privly
 
-## Getting Started
+A privacy-first link gateway demo built with Next.js 16, React 19, and Tailwind CSS v4.
 
-First, run the development server:
+Wrap any URL behind `privly.to/your-alias` and gate it with a password, an access limit, an expiry, or a one-time burn. See exactly who opened it and revoke it instantly.
 
-```bash
+## Getting started
+
+```sh
+nvm install 24.13.1
+nvm use 24.13.1
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Screens
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Screen |
+|---|---|
+| `/` | Landing page |
+| `/dashboard` | Links overview (table / cards / console views) |
+| `/dashboard/create` | Create a gated link |
+| `/dashboard/links/:id` | Per-link analytics |
+| `/settings` | Account settings, accent color, privacy defaults |
+| `/:alias` | Visitor gateway (password gate, blocked states) |
 
-## Learn More
+Demo gateway links to try:
 
-To learn more about Next.js, take a look at the following resources:
+- [`/q4-report`](http://localhost:3000/q4-report) — password-protected (password: `phoenix`)
+- [`/beta-invite`](http://localhost:3000/beta-invite) — limit reached
+- [`/press-kit`](http://localhost:3000/press-kit) — expired
+- [`/nda-draft`](http://localhost:3000/nda-draft) — one-time armed
+- [`/wallet-seed`](http://localhost:3000/wallet-seed) — burned
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tech stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Next.js 16** App Router with Server + Client Components
+- **React 19** with `use()` hook for async data
+- **Tailwind CSS v4** — all theme config in `app/globals.css`
+- **JetBrains Mono** + **IBM Plex Sans** via `next/font/google`
+- Mock data in `lib/mock-data.ts` — services are async wrappers ready for a real API
 
-## Deploy on Vercel
+## Project structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+lib/          Types, mock data, utility functions
+services/     Async data functions (links, analytics, gateway)
+contexts/     AccentContext · LinksContext · ToastContext
+hooks/        use-links · use-link · use-accent · use-toast · use-gateway
+components/
+  ui/         icons · stat-card · toggle · sparkline · status-badge
+  layout/     sidebar · app-shell
+  landing/    landing-nav · hero · terminal-mock · feature-row
+  dashboard/  stat-cards-row · variant-switcher · links-table · links-cards · links-console · live-feed
+  create/     create-form · access-control-row · gateway-preview
+  analytics/  analytics-header · summary-row · opens-chart · geo-breakdown · access-log
+  gateway/    gateway-card · blocked-card
+  settings/   identity-card · accent-picker · privacy-toggles · danger-zone
+app/          Next.js App Router pages and layouts
+```
