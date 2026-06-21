@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { IconGrid, IconPlus, IconChart, IconGear } from '@/components/ui/icons'
+import { usePathname, useRouter } from 'next/navigation'
+import { IconGrid, IconPlus, IconChart, IconGear, IconLogout } from '@/components/ui/icons'
 import { useAccent } from '@/hooks/use-accent'
+import { useAuth } from '@/hooks/use-auth'
 import { accentMap } from '@/lib/utils'
 
 const NAV_ITEMS = [
@@ -15,8 +16,19 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const router = useRouter()
   const { accent } = useAccent()
   const tokens = accentMap(accent)
+  const { currentUser, logout } = useAuth()
+
+  async function handleLogout() {
+    await logout()
+    router.push('/login')
+  }
+
+  const displayName = currentUser?.name ?? 'kael.r'
+  const displayEmail = currentUser?.email ?? 'kael@proton.me'
+  const avatarLetter = displayName.charAt(0).toLowerCase()
 
   function isActive(key: string) {
     if (key === 'analytics') return pathname.startsWith('/dashboard/links/')
@@ -71,21 +83,30 @@ export function Sidebar() {
           </div>
           <div className="font-mono text-[11px] text-m2">62 / 100 links</div>
         </div>
-        <Link
-          href="/settings"
-          className="flex items-center gap-2.5 mt-3 px-1.5 py-2 rounded-lg cursor-pointer hover:bg-panel3"
-        >
-          <div
-            className="w-[30px] h-[30px] rounded-lg border border-line4 flex items-center justify-center font-mono text-[12px]"
-            style={{ background: 'linear-gradient(135deg,#1c2a23,#0e1411)', color: tokens.hex }}
+        <div className="flex items-center gap-1 mt-3">
+          <Link
+            href="/settings"
+            className="flex items-center gap-2.5 flex-1 px-1.5 py-2 rounded-lg cursor-pointer hover:bg-panel3 min-w-0"
           >
-            k
-          </div>
-          <div className="leading-[1.25]">
-            <div className="text-[12px] text-tx font-medium">kael.r</div>
-            <div className="font-mono text-[10px] text-dm">kael@proton.me</div>
-          </div>
-        </Link>
+            <div
+              className="w-[30px] h-[30px] rounded-lg border border-line4 flex-none flex items-center justify-center font-mono text-[12px]"
+              style={{ background: 'linear-gradient(135deg,#1c2a23,#0e1411)', color: tokens.hex }}
+            >
+              {avatarLetter}
+            </div>
+            <div className="leading-[1.25] min-w-0">
+              <div className="text-[12px] text-tx font-medium truncate">{displayName}</div>
+              <div className="font-mono text-[10px] text-dm truncate">{displayEmail}</div>
+            </div>
+          </Link>
+          <button
+            onClick={handleLogout}
+            title="sign out"
+            className="p-2 rounded-lg text-dm hover:text-danger hover:bg-panel3 transition-colors flex-none cursor-pointer"
+          >
+            <IconLogout size={14} />
+          </button>
+        </div>
       </div>
     </div>
   )

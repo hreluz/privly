@@ -58,3 +58,25 @@ export interface StatusMeta {
   color: string
   bg: string
 }
+
+export interface User {
+  id: string
+  name: string
+  email: string
+  plan: 'free' | 'pro'
+  created_at: string
+}
+
+export interface LoginForm {
+  email: string
+  password: string
+}
+
+export interface RegisterForm {
+  name: string
+  email: string
+  password: string
+  confirmPassword: string
+}
+
+export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'error'
