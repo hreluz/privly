@@ -36,7 +36,7 @@ export function Hero() {
 
         <div className="flex gap-3 flex-wrap">
           <Link
-            href="/dashboard"
+            href="/register"
             className="font-mono text-[14px] font-semibold text-ink px-[22px] py-[13px] rounded-[9px] cursor-pointer hover:brightness-110"
             style={{ background: tokens.hex, boxShadow: `0 0 24px ${tokens.glow}` }}
           >

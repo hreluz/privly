@@ -27,11 +27,17 @@ export function LandingNav() {
         <span className="text-mu px-3 py-2 cursor-pointer hover:text-tx">docs</span>
         <span className="text-mu px-3 py-2 cursor-pointer hover:text-tx">pricing</span>
         <Link
-          href="/dashboard"
+          href="/login"
+          className="text-mu px-3 py-2 cursor-pointer hover:text-tx transition-colors"
+        >
+          sign in
+        </Link>
+        <Link
+          href="/register"
           className="text-ink px-4 py-[9px] rounded-lg font-semibold cursor-pointer hover:brightness-110"
           style={{ background: tokens.hex, boxShadow: `0 0 18px ${tokens.glow}` }}
         >
-          launch app →
+          get started →
         </Link>
       </div>
     </div>
