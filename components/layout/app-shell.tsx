@@ -1,11 +1,9 @@
 'use client'
 
 import { useAccent } from '@/hooks/use-accent'
-import { LandingNav } from '@/components/landing/landing-nav'
-import { Hero } from '@/components/landing/hero'
-import { FeatureRow } from '@/components/landing/feature-row'
+import { Sidebar } from './sidebar'
 
-export default function LandingPage() {
+export function AppShell({ children }: { children: React.ReactNode }) {
   const { scanlines } = useAccent()
 
   return (
@@ -19,12 +17,9 @@ export default function LandingPage() {
           }}
         />
       )}
-      <div className="relative z-[1]">
-        <div className="mx-auto max-w-[1180px] px-7">
-          <LandingNav />
-          <Hero />
-          <FeatureRow />
-        </div>
+      <div className="flex min-h-screen relative z-[1]">
+        <Sidebar />
+        <main className="flex-1 min-w-0 flex flex-col">{children}</main>
       </div>
     </div>
   )
